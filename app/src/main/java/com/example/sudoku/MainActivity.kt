@@ -6,24 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sudoku.logic.Sudoku
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +31,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SudokuScreen() {
-    var sudoku by remember { mutableStateOf(generateEmptySudoku()) }
+    val sudokuSolver = remember { Sudoku() }
+    val completeSudoku = sudokuSolver.generateSudoku()
+    var sudoku by remember { mutableStateOf(maskSudoku(completeSudoku)) }
     var selectedCell by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
     Column(
@@ -50,11 +47,42 @@ fun SudokuScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        ActionBar(
+            onErase = {
+                selectedCell?.let { (row, col) ->
+                    if (sudoku[row][col] != null) {
+                        sudoku = sudoku.mapIndexed { r, rowList ->
+                            rowList.mapIndexed { c, cell ->
+                                if (r == row && c == col) null else cell
+                            }
+                        }
+                    }
+                }
+            },
+            onHint = {
+                selectedCell?.let { (row, col) ->
+                    sudoku = sudoku.mapIndexed { r, rowList ->
+                        rowList.mapIndexed { c, cell ->
+                            if (r == row && c == col) completeSudoku[row][col] else cell
+                        }
+                    }
+                }
+            },
+            onRestart = {
+                sudoku = maskSudoku(completeSudoku)
+                selectedCell = null
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         NumberSelector { number ->
             selectedCell?.let { (row, col) ->
-                sudoku = sudoku.mapIndexed { r, rowList ->
-                    rowList.mapIndexed { c, cell ->
-                        if (r == row && c == col) number else cell
+                if (sudoku[row][col] == null) {
+                    sudoku = sudoku.mapIndexed { r, rowList ->
+                        rowList.mapIndexed { c, cell ->
+                            if (r == row && c == col) number else cell
+                        }
                     }
                 }
             }
@@ -110,46 +138,16 @@ fun SudokuCell(
                 val borderThickness = 2.dp.toPx()
                 val thickBorder = 6.dp.toPx()
 
-                drawLine(
-                    Color.Black,
-                    start = Offset(0f, 0f),
-                    end = Offset(size.width, 0f),
-                    strokeWidth = borderThickness
-                )
-                drawLine(
-                    Color.Black,
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, size.height),
-                    strokeWidth = borderThickness
-                )
-                drawLine(
-                    Color.Black,
-                    start = Offset(size.width, 0f),
-                    end = Offset(size.width, size.height),
-                    strokeWidth = borderThickness
-                )
-                drawLine(
-                    Color.Black,
-                    start = Offset(0f, size.height),
-                    end = Offset(size.width, size.height),
-                    strokeWidth = borderThickness
-                )
+                drawLine(Color.Black, Offset(0f, 0f), Offset(size.width, 0f), borderThickness)
+                drawLine(Color.Black, Offset(0f, 0f), Offset(0f, size.height), borderThickness)
+                drawLine(Color.Black, Offset(size.width, 0f), Offset(size.width, size.height), borderThickness)
+                drawLine(Color.Black, Offset(0f, size.height), Offset(size.width, size.height), borderThickness)
 
                 if (hasRightBorder) {
-                    drawLine(
-                        Color.Black,
-                        start = Offset(size.width, 0f),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = thickBorder
-                    )
+                    drawLine(Color.Black, Offset(size.width, 0f), Offset(size.width, size.height), thickBorder)
                 }
                 if (hasBottomBorder) {
-                    drawLine(
-                        Color.Black,
-                        start = Offset(0f, size.height),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = thickBorder
-                    )
+                    drawLine(Color.Black, Offset(0f, size.height), Offset(size.width, size.height), thickBorder)
                 }
             }
     ) {
@@ -163,13 +161,44 @@ fun SudokuCell(
 }
 
 @Composable
+fun ActionBar(
+    onErase: () -> Unit,
+    onHint: () -> Unit,
+    onRestart: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        ActionButton(text = "Erase", onClick = onErase)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "Hint", onClick = onHint)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "Restart", onClick = onRestart)
+    }
+}
+
+@Composable
+fun ActionButton(text: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(80.dp, 40.dp)
+            .background(Color.DarkGray, shape = RoundedCornerShape(8.dp))
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = text, fontSize = 16.sp, color = Color.White)
+    }
+}
+
+@Composable
 fun NumberSelector(onNumberSelected: (Int) -> Unit) {
     Row(horizontalArrangement = Arrangement.Center) {
         for (num in 1..9) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.Gray)
+                    .background(Color.Gray, shape = RoundedCornerShape(8.dp))
                     .clickable { onNumberSelected(num) },
                 contentAlignment = Alignment.Center
             ) {
@@ -180,7 +209,27 @@ fun NumberSelector(onNumberSelected: (Int) -> Unit) {
     }
 }
 
-fun generateEmptySudoku(): List<List<Int?>> {
-    return List(9) { List(9) { null } }
-}
+fun maskSudoku(completeSudoku: Array<IntArray>): List<List<Int?>> {
+    val maskedSudoku: List<MutableList<Int?>> = completeSudoku.map { row ->
+        row.map { it as Int? }.toMutableList()
+    }
 
+    val positions = mutableListOf<Pair<Int, Int>>()
+
+    for (row in 0..8) {
+        for (col in 0..8) {
+            positions.add(Pair(row, col))
+        }
+    }
+
+    positions.shuffle()
+    val visibleCells = positions.take(20)
+
+    for ((row, col) in positions) {
+        if (!visibleCells.contains(Pair(row, col))) {
+            maskedSudoku[row][col] = null
+        }
+    }
+
+    return maskedSudoku
+}
