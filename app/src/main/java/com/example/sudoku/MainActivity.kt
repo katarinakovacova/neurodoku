@@ -29,11 +29,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun SudokuScreen() {
     val sudokuSolver = remember { Sudoku() }
     val completeSudoku = sudokuSolver.generateSudoku()
-    var sudoku by remember { mutableStateOf(maskSudoku(completeSudoku)) }
+    val (sudoku, initialOriginalCells) = remember { maskSudoku(completeSudoku) }
+    var sudokuState by remember { mutableStateOf(sudoku) }
+    var originalCells by remember { mutableStateOf(initialOriginalCells) }
     var selectedCell by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
     Column(
@@ -41,8 +44,10 @@ fun SudokuScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        SudokuGrid(sudoku, selectedCell) { row, col ->
-            selectedCell = if (selectedCell == Pair(row, col)) null else Pair(row, col)
+        SudokuGrid(sudokuState, originalCells, selectedCell) { row, col ->
+            if (!originalCells[row][col]) {
+                selectedCell = if (selectedCell == Pair(row, col)) null else Pair(row, col)
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -50,8 +55,8 @@ fun SudokuScreen() {
         ActionBar(
             onErase = {
                 selectedCell?.let { (row, col) ->
-                    if (sudoku[row][col] != null) {
-                        sudoku = sudoku.mapIndexed { r, rowList ->
+                    if (!originalCells[row][col]) { // Prevent erasing original numbers
+                        sudokuState = sudokuState.mapIndexed { r, rowList ->
                             rowList.mapIndexed { c, cell ->
                                 if (r == row && c == col) null else cell
                             }
@@ -61,7 +66,7 @@ fun SudokuScreen() {
             },
             onHint = {
                 selectedCell?.let { (row, col) ->
-                    sudoku = sudoku.mapIndexed { r, rowList ->
+                    sudokuState = sudokuState.mapIndexed { r, rowList ->
                         rowList.mapIndexed { c, cell ->
                             if (r == row && c == col) completeSudoku[row][col] else cell
                         }
@@ -69,17 +74,20 @@ fun SudokuScreen() {
                 }
             },
             onRestart = {
-                sudoku = maskSudoku(completeSudoku)
+                val (newSudoku, newOriginalCells) = maskSudoku(completeSudoku)
+                sudokuState = newSudoku
+                originalCells = newOriginalCells
                 selectedCell = null
             }
+
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         NumberSelector { number ->
             selectedCell?.let { (row, col) ->
-                if (sudoku[row][col] == null) {
-                    sudoku = sudoku.mapIndexed { r, rowList ->
+                if (!originalCells[row][col]) { // Prevent modifying original numbers
+                    sudokuState = sudokuState.mapIndexed { r, rowList ->
                         rowList.mapIndexed { c, cell ->
                             if (r == row && c == col) number else cell
                         }
@@ -93,6 +101,7 @@ fun SudokuScreen() {
 @Composable
 fun SudokuGrid(
     sudoku: List<List<Int?>>,
+    originalCells: List<List<Boolean>>,
     selectedCell: Pair<Int, Int>?,
     onCellClick: (Int, Int) -> Unit
 ) {
@@ -108,7 +117,7 @@ fun SudokuGrid(
                     SudokuCell(
                         number = sudoku[rowIndex][colIndex],
                         isSelected = selectedCell == Pair(rowIndex, colIndex),
-                        isOriginal = sudoku[rowIndex][colIndex] != null,
+                        isOriginal = originalCells[rowIndex][colIndex],
                         hasRightBorder = (colIndex + 1) % 3 == 0 && colIndex != 8,
                         hasBottomBorder = (rowIndex + 1) % 3 == 0 && rowIndex != 8,
                         onClick = { onCellClick(rowIndex, colIndex) }
@@ -132,7 +141,13 @@ fun SudokuCell(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(40.dp)
-            .background(if (isSelected) Color.Yellow else Color.White)
+            .background(
+                when {
+                isOriginal -> Color.LightGray
+                isSelected -> Color.Yellow
+                else -> Color.White
+                }
+            )
             .clickable(enabled = !isOriginal, onClick = onClick)
             .drawBehind {
                 val borderThickness = 2.dp.toPx()
@@ -209,13 +224,13 @@ fun NumberSelector(onNumberSelected: (Int) -> Unit) {
     }
 }
 
-fun maskSudoku(completeSudoku: Array<IntArray>): List<List<Int?>> {
+fun maskSudoku(completeSudoku: Array<IntArray>): Pair<List<List<Int?>>, List<List<Boolean>>> {
     val maskedSudoku: List<MutableList<Int?>> = completeSudoku.map { row ->
         row.map { it as Int? }.toMutableList()
     }
+    val originalCells = List(9) { MutableList(9) { true } }
 
     val positions = mutableListOf<Pair<Int, Int>>()
-
     for (row in 0..8) {
         for (col in 0..8) {
             positions.add(Pair(row, col))
@@ -228,8 +243,10 @@ fun maskSudoku(completeSudoku: Array<IntArray>): List<List<Int?>> {
     for ((row, col) in positions) {
         if (!visibleCells.contains(Pair(row, col))) {
             maskedSudoku[row][col] = null
+            originalCells[row][col] = false
         }
     }
 
-    return maskedSudoku
+    return Pair(maskedSudoku, originalCells)
 }
+
