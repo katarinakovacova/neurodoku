@@ -55,7 +55,7 @@ fun SudokuScreen() {
         ActionBar(
             onErase = {
                 selectedCell?.let { (row, col) ->
-                    if (!originalCells[row][col]) { // Prevent erasing original numbers
+                    if (!originalCells[row][col]) {
                         sudokuState = sudokuState.mapIndexed { r, rowList ->
                             rowList.mapIndexed { c, cell ->
                                 if (r == row && c == col) null else cell
@@ -79,14 +79,13 @@ fun SudokuScreen() {
                 originalCells = newOriginalCells
                 selectedCell = null
             }
-
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         NumberSelector { number ->
             selectedCell?.let { (row, col) ->
-                if (!originalCells[row][col]) { // Prevent modifying original numbers
+                if (!originalCells[row][col]) {
                     sudokuState = sudokuState.mapIndexed { r, rowList ->
                         rowList.mapIndexed { c, cell ->
                             if (r == row && c == col) number else cell
@@ -249,4 +248,3 @@ fun maskSudoku(completeSudoku: Array<IntArray>): Pair<List<List<Int?>>, List<Lis
 
     return Pair(maskedSudoku, originalCells)
 }
-
