@@ -33,9 +33,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SudokuScreen() {
     val sudokuSolver = remember { Sudoku() }
-    val completeSudoku = sudokuSolver.generateSudoku()
-    val (sudoku, initialOriginalCells) = remember { maskSudoku(completeSudoku) }
-    var sudokuState by remember { mutableStateOf(sudoku) }
+
+    var completeSudoku by remember { mutableStateOf(sudokuSolver.generateSudoku()) }
+    var (sudoku, initialOriginalCells) = remember { maskSudoku(completeSudoku) }
+
+    var initialSudokuState by remember { mutableStateOf(sudoku.map { it.toList() }) }
+    var sudokuState by remember { mutableStateOf(initialSudokuState) }
     var originalCells by remember { mutableStateOf(initialOriginalCells) }
     var selectedCell by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
@@ -73,10 +76,17 @@ fun SudokuScreen() {
                     }
                 }
             },
-            onRestart = {
+            onGetNewSudoku = {
+                completeSudoku = sudokuSolver.generateSudoku()
                 val (newSudoku, newOriginalCells) = maskSudoku(completeSudoku)
+
+                initialSudokuState = newSudoku.map { it.toList() }
                 sudokuState = newSudoku
                 originalCells = newOriginalCells
+                selectedCell = null
+            },
+            onRestart = {
+                sudokuState = initialSudokuState.map { it.toList() }
                 selectedCell = null
             }
         )
@@ -178,6 +188,7 @@ fun SudokuCell(
 fun ActionBar(
     onErase: () -> Unit,
     onHint: () -> Unit,
+    onGetNewSudoku: () -> Unit,
     onRestart: () -> Unit,
 ) {
     Row(
@@ -189,6 +200,8 @@ fun ActionBar(
         ActionButton(text = "Hint", onClick = onHint)
         Spacer(modifier = Modifier.width(8.dp))
         ActionButton(text = "Restart", onClick = onRestart)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "New", onClick = onGetNewSudoku)
     }
 }
 
