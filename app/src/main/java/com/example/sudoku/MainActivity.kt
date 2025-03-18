@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sudoku.logic.Sudoku
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +44,67 @@ fun SudokuScreen() {
     var originalCells by remember { mutableStateOf(initialOriginalCells) }
     var selectedCell by remember { mutableStateOf<Pair<Int, Int>?>(null) }
 
+    // Stav pre časovač
+    var time by remember { mutableStateOf(0) }
+    var isTimerRunning by remember { mutableStateOf(false) }
+
+    // Stav pre overlay
+    var isOverlayVisible by remember { mutableStateOf(false) }
+
+    // Funkcia na zastavenie časovača
+    val stopTimer = {
+        isTimerRunning = false
+        isOverlayVisible = true // Zobraz overlay
+    }
+
+    // Funkcia na spustenie časovača
+    val startTimer = {
+        isTimerRunning = true
+        isOverlayVisible = false // Skryje overlay
+    }
+
+    // Na začiatku sa časovač spustí
+    LaunchedEffect(key1 = Unit) {
+        startTimer() // Automatické spustenie časovača pri načítaní obrazovky
+    }
+
+    // Na začiatku sa časovač spustí, ale je možné ho zastaviť a pokračovať
+    LaunchedEffect(key1 = isTimerRunning) {
+        if (isTimerRunning) {
+            while (true) {
+                delay(1000L) // Časovač beží každú sekundu
+                time += 1
+            }
+        }
+    }
+
+    // Formátovanie času do podoby 00:00
+    val minutes = (time / 60).toString().padStart(2, '0')
+    val seconds = (time % 60).toString().padStart(2, '0')
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp), // Pridaj odskok zhora
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
+        // Zobrazenie časovača nad mriežkou
+        TimerDisplay(minutes, seconds, onStop = stopTimer, onStart = startTimer)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Zobraziť overlay, ak je aktivovaný
+        if (isOverlayVisible) {
+            Overlay(
+                onDismiss = {
+                    isOverlayVisible = false
+                    startTimer() // Pokračovanie časovača
+                }
+            )
+        }
+
+        // Sudoku grid
         SudokuGrid(sudokuState, originalCells, selectedCell) { row, col ->
             if (!originalCells[row][col]) {
                 selectedCell = if (selectedCell == Pair(row, col)) null else Pair(row, col)
@@ -77,6 +135,10 @@ fun SudokuScreen() {
                 }
             },
             onGetNewSudoku = {
+                // Reset časovača pri generovaní nového sudoku
+                time = 0 // Reset na 00:00
+                startTimer() // Spustí časovač od začiatku
+
                 completeSudoku = sudokuSolver.generateSudoku()
                 val (newSudoku, newOriginalCells) = maskSudoku(completeSudoku)
 
@@ -106,6 +168,93 @@ fun SudokuScreen() {
         }
     }
 }
+
+@Composable
+fun TimerDisplay(minutes: String, seconds: String, onStop: () -> Unit, onStart: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .clickable {
+                if (minutes == "00" && seconds == "00") {
+                    onStart() // Ak ešte nebeží, spustí sa
+                } else {
+                    onStop() // Ak už beží, zastaví sa
+                }
+            } // Ak klikneš, zastaví sa alebo sa spustí
+            .padding(16.dp)
+            .background(Color.Gray, shape = RoundedCornerShape(8.dp)) // Sivý pozadie
+            .padding(horizontal = 24.dp, vertical = 8.dp) // Väčší padding na stranách
+    ) {
+        Text(
+            text = "$minutes:$seconds", // Formátovaný čas
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+fun Overlay(onDismiss: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.7f)) // Polopriesvitné pozadie
+            .clickable { onDismiss() }, // Ak klikneš na overlay, skryje sa
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "You stopped your Sudoku.",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { onDismiss() }) {
+                Text("Continue")
+            }
+        }
+    }
+}
+
+
+@Composable
+fun ActionBar(
+    onErase: () -> Unit,
+    onHint: () -> Unit,
+    onGetNewSudoku: () -> Unit,
+    onRestart: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        ActionButton(text = "Erase", onClick = onErase)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "Hint", onClick = onHint)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "Restart", onClick = onRestart)
+        Spacer(modifier = Modifier.width(8.dp))
+        ActionButton(text = "New", onClick = onGetNewSudoku)
+    }
+}
+
+@Composable
+fun ActionButton(text: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(80.dp, 40.dp)
+            .background(Color.DarkGray, shape = RoundedCornerShape(8.dp))
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = text, fontSize = 16.sp, color = Color.White)
+    }
+}
+
 
 @Composable
 fun SudokuGrid(
@@ -152,9 +301,9 @@ fun SudokuCell(
             .size(40.dp)
             .background(
                 when {
-                isOriginal -> Color.LightGray
-                isSelected -> Color.Yellow
-                else -> Color.White
+                    isOriginal -> Color.LightGray
+                    isSelected -> Color.Yellow
+                    else -> Color.White
                 }
             )
             .clickable(enabled = !isOriginal, onClick = onClick)
@@ -164,14 +313,34 @@ fun SudokuCell(
 
                 drawLine(Color.Black, Offset(0f, 0f), Offset(size.width, 0f), borderThickness)
                 drawLine(Color.Black, Offset(0f, 0f), Offset(0f, size.height), borderThickness)
-                drawLine(Color.Black, Offset(size.width, 0f), Offset(size.width, size.height), borderThickness)
-                drawLine(Color.Black, Offset(0f, size.height), Offset(size.width, size.height), borderThickness)
+                drawLine(
+                    Color.Black,
+                    Offset(size.width, 0f),
+                    Offset(size.width, size.height),
+                    borderThickness
+                )
+                drawLine(
+                    Color.Black,
+                    Offset(0f, size.height),
+                    Offset(size.width, size.height),
+                    borderThickness
+                )
 
                 if (hasRightBorder) {
-                    drawLine(Color.Black, Offset(size.width, 0f), Offset(size.width, size.height), thickBorder)
+                    drawLine(
+                        Color.Black,
+                        Offset(size.width, 0f),
+                        Offset(size.width, size.height),
+                        thickBorder
+                    )
                 }
                 if (hasBottomBorder) {
-                    drawLine(Color.Black, Offset(0f, size.height), Offset(size.width, size.height), thickBorder)
+                    drawLine(
+                        Color.Black,
+                        Offset(0f, size.height),
+                        Offset(size.width, size.height),
+                        thickBorder
+                    )
                 }
             }
     ) {
@@ -181,40 +350,6 @@ fun SudokuCell(
             fontWeight = FontWeight.Bold,
             color = if (isOriginal) Color.Black else Color.Blue
         )
-    }
-}
-
-@Composable
-fun ActionBar(
-    onErase: () -> Unit,
-    onHint: () -> Unit,
-    onGetNewSudoku: () -> Unit,
-    onRestart: () -> Unit,
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        ActionButton(text = "Erase", onClick = onErase)
-        Spacer(modifier = Modifier.width(8.dp))
-        ActionButton(text = "Hint", onClick = onHint)
-        Spacer(modifier = Modifier.width(8.dp))
-        ActionButton(text = "Restart", onClick = onRestart)
-        Spacer(modifier = Modifier.width(8.dp))
-        ActionButton(text = "New", onClick = onGetNewSudoku)
-    }
-}
-
-@Composable
-fun ActionButton(text: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(80.dp, 40.dp)
-            .background(Color.DarkGray, shape = RoundedCornerShape(8.dp))
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = text, fontSize = 16.sp, color = Color.White)
     }
 }
 
