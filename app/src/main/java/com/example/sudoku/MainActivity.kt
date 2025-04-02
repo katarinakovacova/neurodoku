@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sudoku.logic.Sudoku
+import com.example.sudoku.domain.usecase.GenerateSudokuUseCase
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SudokuScreen() {
-    val sudokuSolver = remember { Sudoku() }
+    val sudokuSolver = remember { GenerateSudokuUseCase() }
 
     var completeSudoku by remember { mutableStateOf(sudokuSolver.generateSudoku()) }
     var (sudoku, initialOriginalCells) = remember { maskSudoku(completeSudoku) }
@@ -350,24 +350,6 @@ fun SudokuCell(
             fontWeight = FontWeight.Bold,
             color = if (isOriginal) Color.Black else Color.Blue
         )
-    }
-}
-
-@Composable
-fun NumberSelector(onNumberSelected: (Int) -> Unit) {
-    Row(horizontalArrangement = Arrangement.Center) {
-        for (num in 1..9) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.Gray, shape = RoundedCornerShape(8.dp))
-                    .clickable { onNumberSelected(num) },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = num.toString(), fontSize = 20.sp, color = Color.White)
-            }
-            Spacer(modifier = Modifier.width(4.dp))
-        }
     }
 }
 

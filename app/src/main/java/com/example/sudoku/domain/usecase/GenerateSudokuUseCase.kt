@@ -1,6 +1,6 @@
-package com.example.sudoku.logic
+package com.example.sudoku.domain.usecase
 
-class Sudoku {
+class GenerateSudokuUseCase {
 
     /**
      * A 9x9 matrix representing Sudoku grid, initialized with 0
