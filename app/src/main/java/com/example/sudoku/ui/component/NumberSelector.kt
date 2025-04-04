@@ -24,12 +24,12 @@ fun NumberSelector() {
     val selectedNumber = remember { mutableStateOf<Int?>(null) }
 
     Row(horizontalArrangement = Arrangement.Center) {
-        for(number in 1..9) {
+        for (number in 1..9) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
                     .background(
-                        if(selectedNumber.value == number) Color.Blue else Color.Gray,
+                        if (selectedNumber.value == number) Color.Blue else Color.Gray,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable { selectedNumber.value = number },
