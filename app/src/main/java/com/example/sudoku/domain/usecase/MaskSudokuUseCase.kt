@@ -1,11 +1,9 @@
 package com.example.sudoku.domain.usecase
 
 class MaskSudokuUseCase {
-
-    fun hideNumbersFromSudokuGrid(completeSudoku: Array<IntArray>): Array<Array<Int?>> {
-
-        val maskedSudoku = Array(9) { row -> completeSudoku[row].map { it as Int? }.toTypedArray() }
-        val positions = mutableListOf<Pair<Int,Int>>()
+    fun generateVisibleMask(visibleCount: Int = 20): Array<Array<Boolean>> {
+        val maskForSudoku = Array(9) { Array(9) { false } }
+        val positions = mutableListOf<Pair<Int, Int>>()
 
         for (row in 0..8) {
             for (column in 0..8) {
@@ -14,13 +12,13 @@ class MaskSudokuUseCase {
         }
 
         positions.shuffle()
-        val visibleCells = positions.take(20).toSet()
 
-        for ((row, column) in positions) {
-            if (Pair(row, column) !in visibleCells) {
-                maskedSudoku[row][column] = null
-            }
+        val visibleCells = positions.take(visibleCount)
+
+        for ((row, column) in visibleCells) {
+            maskForSudoku[row][column] = true
         }
-        return maskedSudoku
+
+        return maskForSudoku
     }
 }
