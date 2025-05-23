@@ -1,4 +1,4 @@
-package com.example.sudoku.domain
+package com.example.sudoku.domain.model
 
 enum class SudokuDifficulty(val visibleCount: Int) {
     EASY(40),
