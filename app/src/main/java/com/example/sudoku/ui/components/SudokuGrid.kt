@@ -12,10 +12,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SudokuGrid(
-    sudoku: List<List<Int?>>,
-    originalCells: List<List<Boolean>>,
+    sudoku: Array<Array<Int?>>,
+    originalCells: Array<Array<Boolean>>,
     selectedCell: Pair<Int, Int>?,
-    onCellClick: (Int, Int) -> Unit
+    onCellClick: (row: Int, col: Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -23,15 +23,15 @@ fun SudokuGrid(
             .border(3.dp, Color.Black)
             .padding(1.dp)
     ) {
-        for (rowIndex in 0..8) {
+        for (rowIndex in sudoku.indices) {
             Row {
-                for (colIndex in 0..8) {
+                for (colIndex in sudoku[rowIndex].indices) {
                     SudokuCell(
                         number = sudoku[rowIndex][colIndex],
                         isSelected = selectedCell == Pair(rowIndex, colIndex),
                         isOriginal = originalCells[rowIndex][colIndex],
-                        hasRightBorder = (colIndex + 1) % 3 == 0 && colIndex != 8,
-                        hasBottomBorder = (rowIndex + 1) % 3 == 0 && rowIndex != 8,
+                        hasRightBorder = (colIndex + 1) % 3 == 0 && colIndex != sudoku[rowIndex].lastIndex,
+                        hasBottomBorder = (rowIndex + 1) % 3 == 0 && rowIndex != sudoku.lastIndex,
                         onClick = { onCellClick(rowIndex, colIndex) }
                     )
                 }

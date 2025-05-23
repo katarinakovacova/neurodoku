@@ -1,4 +1,6 @@
-package com.example.sudoku.domain
+package com.example.sudoku.domain.usecase
+
+import com.example.sudoku.domain.model.SudokuDifficulty
 
 class MaskSudokuUseCase {
     fun generateVisibleMask(sudokuDifficulty: SudokuDifficulty): Array<Array<Boolean>> {

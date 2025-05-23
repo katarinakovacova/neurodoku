@@ -1,4 +1,4 @@
-package com.example.sudoku.domain
+package com.example.sudoku.domain.usecase
 
 class GenerateSudokuUseCase {
 
