@@ -1,32 +1,52 @@
 package com.example.sudoku.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import com.example.sudoku.domain.model.SudokuDifficulty
+import com.example.sudoku.ui.viewmodel.StatisticsViewModel
+import androidx.compose.foundation.layout.fillMaxWidth
+import com.example.sudoku.ui.components.BarChart
+
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxSize
 
 @Composable
-fun StatisticsScreen(innerPadding: PaddingValues) {
+fun StatisticsScreen(viewModel: StatisticsViewModel, modifier: Modifier = Modifier) {
+    val stats by viewModel.statsData.collectAsState()
+    val difficulties = SudokuDifficulty.entries
+
+    val data = difficulties.associate { difficulty ->
+        difficulty.name to (stats[difficulty]?.size ?: 0)
+    }
+
     Column(
-        modifier = Modifier
-            .padding(innerPadding)
+        modifier = modifier
             .fillMaxSize()
-            .background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp)
     ) {
-        Text(
-            text = "Statistics Screen",
-            fontSize = 40.sp,
-            color = Color.Black
-        )
+        Spacer(Modifier.height(16.dp))
+
+        // Box nech vyplní väčšinu výšky
+        Box(modifier = Modifier.weight(1f)) {
+            BarChart(
+                data = data,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 56.dp)  // <-- pridaj odskok zhora podľa výšky titulku + status baru
+            )
+        }
     }
 }
+

@@ -66,13 +66,19 @@ class SudokuViewModel(
             }
         }
 
-        val updatedGame = game.copy(userGrid = newUserGrid)
+        var updatedGame = game.copy(userGrid = newUserGrid)
+
+        if (isSudokuCompleted(updatedGame)) {
+            updatedGame = updatedGame.copy(isCompleted = true, completedAt = System.currentTimeMillis())
+        }
+
         _sudokuGame.value = updatedGame
 
         viewModelScope.launch {
             saveSudokuGameUseCase(updatedGame)
         }
     }
+
 
     fun getHint(row: Int, col: Int) {
         val game = _sudokuGame.value ?: return
@@ -86,13 +92,19 @@ class SudokuViewModel(
             }
         }
 
-        val updatedGame = game.copy(userGrid = newUserGrid)
+        var updatedGame = game.copy(userGrid = newUserGrid)
+
+        if (isSudokuCompleted(updatedGame)) {
+            updatedGame = updatedGame.copy(isCompleted = true, completedAt = System.currentTimeMillis())
+        }
+
         _sudokuGame.value = updatedGame
 
         viewModelScope.launch {
             saveSudokuGameUseCase(updatedGame)
         }
     }
+
 
     fun eraseNumber(row: Int, col: Int) {
         setNumber(row, col, null)
@@ -126,5 +138,18 @@ class SudokuViewModel(
     private fun resetTimer() {
         _time.value = 0L
         stopTimer()
+    }
+
+    private fun isSudokuCompleted(game: SudokuGame): Boolean {
+        for (r in 0..8) {
+            for (c in 0..8) {
+                val userValue = game.userGrid[r][c]
+                val correctValue = game.completeGrid[r][c]
+                if (userValue == null || userValue != correctValue) {
+                    return false
+                }
+            }
+        }
+        return true
     }
 }

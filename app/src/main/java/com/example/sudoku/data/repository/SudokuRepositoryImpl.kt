@@ -18,4 +18,9 @@ class SudokuRepositoryImpl(
         val entity = sudokuMapper.domainToEntity(sudoku)
         sudokuDao.insertSudoku(entity)
     }
+
+    override suspend fun getAllCompletedGames(): List<SudokuGame> {
+        val entities = sudokuDao.getAllCompletedGames()
+        return entities.map { sudokuMapper.entityToDomain(it) }
+    }
 }
