@@ -13,4 +13,7 @@ interface SudokuDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSudoku(sudoku: SudokuEntity)
+
+    @Query("SELECT * FROM sudoku WHERE isCompleted = 1")
+    suspend fun getAllCompletedGames(): List<SudokuEntity>
 }

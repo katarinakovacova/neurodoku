@@ -14,6 +14,7 @@ lifecycleRuntimeCompose = "2.8.7"
 activityCompose = "1.10.1"
 composeBom = "2025.04.01"
 material3 = "1.2.0"
+materialCharts = "1.2.0"
 navigationRuntime = "2.9.0-rc01"
 navigationCompose = "2.8.9"
 generativeai = "0.9.0"
@@ -62,6 +63,7 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 androidx-compose-material-core = { group = "androidx.wear.compose", name = "compose-material-core", version.ref = "composeMaterialCore" }
+material-charts = { module = "org.jetbrains.compose.material:material-charts", version.ref = "materialCharts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
