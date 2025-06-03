@@ -1,6 +1,6 @@
-package com.example.sudoku.data.mapper
+package com.example.sudoku.data.sudoku.mapper
 
-import com.example.sudoku.data.local.SudokuEntity
+import com.example.sudoku.data.sudoku.local.SudokuEntity
 import com.example.sudoku.domain.model.SudokuDifficulty
 import com.example.sudoku.domain.model.SudokuGame
 import com.google.gson.Gson

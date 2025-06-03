@@ -1,7 +1,7 @@
-package com.example.sudoku.data.repository
+package com.example.sudoku.data.sudoku.repository
 
-import com.example.sudoku.data.local.SudokuDao
-import com.example.sudoku.data.mapper.SudokuMapper
+import com.example.sudoku.data.sudoku.local.SudokuDao
+import com.example.sudoku.data.sudoku.mapper.SudokuMapper
 import com.example.sudoku.domain.model.SudokuGame
 
 class SudokuRepositoryImpl(

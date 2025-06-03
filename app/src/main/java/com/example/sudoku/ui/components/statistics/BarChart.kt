@@ -1,4 +1,4 @@
-package com.example.sudoku.ui.components
+package com.example.sudoku.ui.components.statistics
 //
 //import androidx.compose.foundation.Canvas
 //import androidx.compose.foundation.layout.*

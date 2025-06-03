@@ -16,12 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.sudoku.domain.model.SudokuDifficulty
-import com.example.sudoku.ui.components.LevelSelectionDialog
-import com.example.sudoku.ui.components.LowerActionBar
-import com.example.sudoku.ui.components.NumberSelector
-import com.example.sudoku.ui.components.Overlay
-import com.example.sudoku.ui.components.SudokuGrid
-import com.example.sudoku.ui.components.UpperActionBar
+import com.example.sudoku.ui.components.sudoku.LevelSelectionDialog
+import com.example.sudoku.ui.components.sudoku.LowerActionBar
+import com.example.sudoku.ui.components.sudoku.NumberSelector
+import com.example.sudoku.ui.components.sudoku.Overlay
+import com.example.sudoku.ui.components.sudoku.SudokuGrid
+import com.example.sudoku.ui.components.sudoku.UpperActionBar
 import com.example.sudoku.ui.viewmodel.SudokuViewModel
 
 @Composable

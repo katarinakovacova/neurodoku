@@ -1,32 +1,49 @@
-package com.example.sudoku.ui.screens
+package com.example.sudokuapp.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sudoku.data.blog.local.BlogPost
+import com.example.sudoku.data.blog.repository.BlogRepository
 
 @Composable
-fun BlogScreen(innerPadding: PaddingValues) {
+fun BlogScreen(
+    innerPadding: PaddingValues,
+    onPostClick: (BlogPost) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
-            .background(Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color.White)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Blog Screen",
-            fontSize = 40.sp,
+            text = "Blog",
+            fontSize = 30.sp,
             color = Color.Black
         )
+
+        BlogRepository.blogPosts.forEach { post ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onPostClick(post) }
+            ) {
+                Text(
+                    text = post.title,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
     }
 }

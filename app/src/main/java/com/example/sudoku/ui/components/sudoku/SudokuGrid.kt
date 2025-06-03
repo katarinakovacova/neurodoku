@@ -1,4 +1,4 @@
-package com.example.sudoku.ui.components
+package com.example.sudoku.ui.components.sudoku
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column

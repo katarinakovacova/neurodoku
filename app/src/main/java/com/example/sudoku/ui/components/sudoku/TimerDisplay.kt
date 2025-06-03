@@ -1,4 +1,4 @@
-package com.example.sudoku.ui.components
+package com.example.sudoku.ui.components.sudoku
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

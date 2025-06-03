@@ -1,4 +1,4 @@
-package com.example.sudoku.ui.components
+package com.example.sudoku.ui.components.sudoku
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
