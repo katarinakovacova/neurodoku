@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sudoku.ui.navigation.NavigationItem
 import com.example.sudoku.ui.navigation.Screens
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
@@ -71,7 +72,6 @@ fun MainScreen() {
                 selectedIcon = Icons.Filled.Settings,
                 unselectedIcon = Icons.Outlined.Settings,
             ),
-
         )
     }
 
@@ -82,7 +82,13 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val topBarTitle = items.firstOrNull { it.route == currentRoute }?.title ?: items[0].title
+    val topBarTitle = when {
+        currentRoute == Screens.Blog.route -> "Blog"
+        currentRoute?.startsWith("blogDetail") == true -> "Blog Detail"
+        else -> items.firstOrNull { it.route == currentRoute }?.title ?: items[0].title
+    }
+
+    val showBackButton = currentRoute?.startsWith("blogDetail") == true
 
     ModalNavigationDrawer(
         gesturesEnabled = drawerState.isOpen,
@@ -113,8 +119,14 @@ fun MainScreen() {
                 TopAppBar(
                     title = { Text(text = topBarTitle) },
                     navigationIcon = {
-                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Menu")
+                        if (showBackButton) {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                            }
+                        } else {
+                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                Icon(Icons.Default.Menu, contentDescription = "Menu")
+                            }
                         }
                     }
                 )

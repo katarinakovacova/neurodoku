@@ -1,4 +1,4 @@
-package com.example.sudoku.data.local
+package com.example.sudoku.data.sudoku.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

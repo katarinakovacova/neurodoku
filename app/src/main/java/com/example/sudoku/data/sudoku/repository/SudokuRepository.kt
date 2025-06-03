@@ -1,4 +1,4 @@
-package com.example.sudoku.data.repository
+package com.example.sudoku.data.sudoku.repository
 
 import com.example.sudoku.domain.model.SudokuGame
 
