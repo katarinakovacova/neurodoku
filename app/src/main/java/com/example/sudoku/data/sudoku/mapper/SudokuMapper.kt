@@ -19,6 +19,7 @@ class SudokuMapper(private val gson: Gson = Gson()) {
         val difficulty = SudokuDifficulty.valueOf(entity.difficulty)
 
         return SudokuGame(
+            id = entity.id,
             completeGrid = completeGrid,
             visibleMask = visibleMask,
             userGrid = userGrid,
@@ -36,6 +37,7 @@ class SudokuMapper(private val gson: Gson = Gson()) {
         val userGridJson = gson.toJson(domain.userGrid)
 
         return SudokuEntity(
+            id = domain.id,
             initialGrid = initialGridJson,
             maskedGrid = maskedGridJson,
             userGrid = userGridJson,

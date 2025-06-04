@@ -7,11 +7,10 @@ import com.example.sudoku.domain.model.SudokuGame
 import com.example.sudoku.domain.usecase.GenerateNewSudokuGameUseCase
 import com.example.sudoku.domain.usecase.LoadSudokuGameUseCase
 import com.example.sudoku.domain.usecase.SaveSudokuGameUseCase
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class SudokuViewModel(
@@ -30,6 +29,7 @@ class SudokuViewModel(
     val time: StateFlow<Long> = _time.asStateFlow()
 
     private var timerJob: Job? = null
+    private var autosaveJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -42,6 +42,8 @@ class SudokuViewModel(
                 generateNewGame(SudokuDifficulty.MEDIUM)
             }
         }
+
+        observeAndAutosave()
     }
 
     fun generateNewGame(difficulty: SudokuDifficulty) {
@@ -60,25 +62,14 @@ class SudokuViewModel(
         val game = _sudokuGame.value ?: return
         if (game.visibleMask[row][col]) return
 
-        val newUserGrid = Array(9) { r ->
-            Array(9) { c ->
-                if (r == row && c == col) number else game.userGrid[r][c]
-            }
-        }
+        val newUserGrid = game.userGrid.mapIndexed { r, rowArray ->
+            rowArray.mapIndexed { c, value ->
+                if (r == row && c == col) number else value
+            }.toTypedArray()
+        }.toTypedArray()
 
-        var updatedGame = game.copy(userGrid = newUserGrid)
-
-        if (isSudokuCompleted(updatedGame)) {
-            updatedGame = updatedGame.copy(isCompleted = true, completedAt = System.currentTimeMillis())
-        }
-
-        _sudokuGame.value = updatedGame
-
-        viewModelScope.launch {
-            saveSudokuGameUseCase(updatedGame)
-        }
+        updateGame { it.copy(userGrid = newUserGrid) }
     }
-
 
     fun getHint(row: Int, col: Int) {
         val game = _sudokuGame.value ?: return
@@ -86,33 +77,17 @@ class SudokuViewModel(
 
         val hintNumber = game.completeGrid[row][col]
 
-        val newUserGrid = Array(9) { r ->
-            Array(9) { c ->
-                if (r == row && c == col) hintNumber else game.userGrid[r][c]
-            }
-        }
+        val newUserGrid = game.userGrid.mapIndexed { r, rowArray ->
+            rowArray.mapIndexed { c, value ->
+                if (r == row && c == col) hintNumber else value
+            }.toTypedArray()
+        }.toTypedArray()
 
-        var updatedGame = game.copy(userGrid = newUserGrid)
-
-        if (isSudokuCompleted(updatedGame)) {
-            updatedGame = updatedGame.copy(isCompleted = true, completedAt = System.currentTimeMillis())
-        }
-
-        _sudokuGame.value = updatedGame
-
-        viewModelScope.launch {
-            saveSudokuGameUseCase(updatedGame)
-        }
+        updateGame { it.copy(userGrid = newUserGrid) }
     }
-
 
     fun eraseNumber(row: Int, col: Int) {
         setNumber(row, col, null)
-    }
-
-    fun restartGame() {
-        val game = _sudokuGame.value ?: return
-        generateNewGame(game.difficulty)
     }
 
     fun startTimer() {
@@ -121,12 +96,6 @@ class SudokuViewModel(
             while (true) {
                 delay(1000)
                 _time.value += 1
-                val game = _sudokuGame.value
-                if (game != null) {
-                    val updatedGame = game.copy(timeSpent = _time.value)
-                    _sudokuGame.value = updatedGame
-                    saveSudokuGameUseCase(updatedGame)
-                }
             }
         }
     }
@@ -140,6 +109,25 @@ class SudokuViewModel(
         stopTimer()
     }
 
+    private fun updateGame(modifier: (SudokuGame) -> SudokuGame) {
+        val game = _sudokuGame.value ?: return
+        val updated = modifier(game)
+
+        println("updateGame - Updated userGrid snapshot:")
+        updated.userGrid.forEach { row ->
+            println(row.joinToString(", ") { it?.toString() ?: "." })
+        }
+
+        val finalGame = if (isSudokuCompleted(updated)) {
+            updated.copy(isCompleted = true, completedAt = System.currentTimeMillis())
+        } else {
+            updated
+        }
+
+        _sudokuGame.value = finalGame
+    }
+
+
     private fun isSudokuCompleted(game: SudokuGame): Boolean {
         for (r in 0..8) {
             for (c in 0..8) {
@@ -152,4 +140,32 @@ class SudokuViewModel(
         }
         return true
     }
+
+    @OptIn(FlowPreview::class)
+    private fun observeAndAutosave() {
+        autosaveJob = viewModelScope.launch {
+            combine(_sudokuGame, _time) { game, time ->
+                game?.copy(timeSpent = time)
+            }.debounce(1000)
+                .filterNotNull()
+                .collect { game ->
+                    println("Autosaving SudokuGame with id=${game.id}, timeSpent=${game.timeSpent}")
+                    println("Autosaving userGrid snapshot:")
+                    game.userGrid.forEach { row ->
+                        println(row.joinToString(", ") { it?.toString() ?: "." })
+                    }
+                    saveSudokuGameUseCase(game)
+                }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.launch {
+            _sudokuGame.value?.let { game ->
+                saveSudokuGameUseCase(game.copy(timeSpent = _time.value))
+            }
+        }
+    }
+
 }

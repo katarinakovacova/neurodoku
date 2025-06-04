@@ -10,16 +10,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sudoku.ui.navigation.NavigationItem
@@ -27,6 +24,7 @@ import com.example.sudoku.ui.navigation.NavigationBarBody
 import com.example.sudoku.ui.navigation.NavigationBarHeader
 import com.example.sudoku.ui.navigation.Screens
 import com.example.sudoku.ui.navigation.SetUpNavigationGraph
+import com.example.sudoku.ui.viewmodel.SudokuViewModel
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -34,8 +32,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     darkThemeEnabled: Boolean,
-    onToggleDarkTheme: (Boolean) -> Unit
+    onToggleDarkTheme: (Boolean) -> Unit,
+    onAppPaused: ((() -> Unit) -> Unit),
+    onAppResumed: ((() -> Unit) -> Unit)
 ) {
+    val viewModel: SudokuViewModel = org.koin.androidx.compose.getViewModel()
+
+    LaunchedEffect(Unit) {
+        onAppPaused { viewModel.stopTimer() }
+        onAppResumed { viewModel.startTimer() }
+    }
     val items = remember {
         listOf(
             NavigationItem(
