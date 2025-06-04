@@ -31,22 +31,51 @@ fun Overlay(onDismiss: () -> Unit) {
                     .padding(24.dp)
                     .widthIn(min = 280.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "Sudoku paused",
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+
                 Text(
                     text = "Press Continue to resume.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Text(
+                        text = "🧠 Dementia Prevention Tips",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    val tips = listOf(
+                        "Solve puzzles regularly to keep your brain active!",
+                        "Stay socially engaged: talk to friends and family.",
+                        "Eat a balanced diet with brain-boosting foods.",
+                        "Exercise: a healthy body supports a healthy mind.",
+                        "Try new activities to challenge your brain!"
+                    )
+
+                    tips.forEach { tip ->
+                        Text(
+                            text = "• $tip",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
                 Button(
                     onClick = onDismiss,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp)
                 ) {
                     Text("Continue")
                 }
@@ -54,3 +83,4 @@ fun Overlay(onDismiss: () -> Unit) {
         }
     }
 }
+
