@@ -14,7 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.example.sudoku.domain.model.SudokuDifficulty
 import com.example.sudoku.ui.components.sudoku.LevelSelectionDialog
 import com.example.sudoku.ui.components.sudoku.LowerActionBar
@@ -46,6 +49,23 @@ fun SudokuScreen(
     val stopTimer = {
         viewModel.stopTimer()
         isOverlayVisible = true
+    }
+
+    // Lifecycle observer na zastavenie/spustenie timeru pri prepnutí karty
+    val lifecycleOwner = LocalLifecycleOwner.current
+    androidx.compose.runtime.DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_STOP -> stopTimer()
+                Lifecycle.Event.ON_RESUME -> startTimer()
+                else -> {}
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     if (showLevelDialog) {
