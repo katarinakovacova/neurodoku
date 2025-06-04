@@ -35,7 +35,8 @@ fun Overlay(onDismiss: () -> Unit) {
             ) {
                 Text(
                     text = "Sudoku paused",
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = "Press Continue to resume.",

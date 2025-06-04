@@ -33,13 +33,12 @@ fun StatisticsScreen(viewModel: StatisticsViewModel, modifier: Modifier = Modifi
     ) {
         Spacer(Modifier.height(16.dp))
 
-        // Box nech vyplní väčšinu výšky
         Box(modifier = Modifier.weight(1f)) {
             BarChart(
                 data = data,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 56.dp)  // <-- pridaj odskok zhora podľa výšky titulku + status baru
+                    .padding(top = 56.dp)
             )
         }
     }

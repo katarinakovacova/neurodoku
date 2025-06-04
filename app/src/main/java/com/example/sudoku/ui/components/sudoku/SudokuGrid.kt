@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,7 +20,7 @@ fun SudokuGrid(
     Column(
         modifier = Modifier
             .wrapContentSize()
-            .border(3.dp, Color.Black)
+            .border(3.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f))
             .padding(1.dp)
     ) {
         for (rowIndex in sudoku.indices) {
