@@ -13,9 +13,10 @@ fun LowerActionBar(
     onErase: () -> Unit,
     onHint: () -> Unit,
     onRestart: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.Center,

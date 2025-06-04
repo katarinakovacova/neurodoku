@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,12 +25,18 @@ fun SudokuCell(
     onClick: () -> Unit
 ) {
     val backgroundColor = when {
-        isSelected -> Color(0xFFDCE3FF)
-        isOriginal -> Color(0xFFEEEEEE)
-        else -> Color.White
+        isSelected -> MaterialTheme.colorScheme.secondaryContainer
+        isOriginal -> MaterialTheme.colorScheme.surfaceVariant
+        else -> MaterialTheme.colorScheme.background
     }
 
-    val textColor = if (isOriginal) Color.Black else MaterialTheme.colorScheme.primary
+    val textColor = if (isOriginal) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+
+    val borderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
 
     Box(
         contentAlignment = Alignment.Center,
@@ -42,18 +47,19 @@ fun SudokuCell(
             .drawBehind {
                 val normalBorder = 1.dp.toPx()
                 val thickBorder = 2.5.dp.toPx()
-                val black = Color.Black
 
-                drawLine(black, Offset(0f, 0f), Offset(size.width, 0f), normalBorder)
-                drawLine(black, Offset(0f, 0f), Offset(0f, size.height), normalBorder)
-                drawLine(black, Offset(size.width, 0f), Offset(size.width, size.height), normalBorder)
-                drawLine(black, Offset(0f, size.height), Offset(size.width, size.height), normalBorder)
+                // Draw normal borders
+                drawLine(borderColor, Offset(0f, 0f), Offset(size.width, 0f), normalBorder)
+                drawLine(borderColor, Offset(0f, 0f), Offset(0f, size.height), normalBorder)
+                drawLine(borderColor, Offset(size.width, 0f), Offset(size.width, size.height), normalBorder)
+                drawLine(borderColor, Offset(0f, size.height), Offset(size.width, size.height), normalBorder)
 
+                // Draw thick borders if applicable
                 if (hasRightBorder) {
-                    drawLine(black, Offset(size.width, 0f), Offset(size.width, size.height), thickBorder)
+                    drawLine(borderColor, Offset(size.width, 0f), Offset(size.width, size.height), thickBorder)
                 }
                 if (hasBottomBorder) {
-                    drawLine(black, Offset(0f, size.height), Offset(size.width, size.height), thickBorder)
+                    drawLine(borderColor, Offset(0f, size.height), Offset(size.width, size.height), thickBorder)
                 }
             }
     ) {

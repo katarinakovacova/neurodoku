@@ -3,9 +3,7 @@ package com.example.sudoku.ui.components.sudoku
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,7 +16,12 @@ fun LevelSelectionDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text(text = "Select Difficulty Level") },
+        title = {
+            Text(
+                text = "Select Difficulty Level",
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        },
         text = {
             Column {
                 SudokuDifficulty.entries.forEach { level ->
@@ -27,7 +30,13 @@ fun LevelSelectionDialog(
                             onLevelSelected(level)
                             onDismissRequest()
                         },
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                     ) {
                         Text(level.name)
                     }
@@ -36,7 +45,13 @@ fun LevelSelectionDialog(
         },
         confirmButton = { },
         dismissButton = {
-            Button(onClick = onDismissRequest) {
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            ) {
                 Text("Cancel")
             }
         }

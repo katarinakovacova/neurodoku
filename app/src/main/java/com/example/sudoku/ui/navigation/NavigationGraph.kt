@@ -10,20 +10,21 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.sudoku.data.blog.repository.BlogRepository
 import com.example.sudoku.ui.screens.SettingsScreen
 import com.example.sudoku.ui.screens.StatisticsScreen
 import com.example.sudoku.ui.screens.SudokuScreen
 import com.example.sudoku.ui.viewmodel.StatisticsViewModel
 import com.example.sudoku.ui.viewmodel.SudokuViewModel
-import com.example.sudokuapp.ui.screens.BlogScreen
+import com.example.sudoku.ui.screens.BlogScreen
 import org.koin.androidx.compose.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetUpNavigationGraph(
     navController: NavHostController,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    darkThemeEnabled: Boolean,
+    onToggleDarkTheme: (Boolean) -> Unit
 ) {
 
     NavHost(navController = navController, startDestination = Screens.Sudoku.route) {
@@ -49,11 +50,15 @@ fun SetUpNavigationGraph(
         }
 
         composable(Screens.Settings.route) {
-            SettingsScreen(innerPadding = innerPadding)
+            SettingsScreen(
+                innerPadding = innerPadding,
+                isDarkTheme = darkThemeEnabled,
+                onToggleDarkTheme = onToggleDarkTheme
+            )
         }
 
         composable(Screens.Statistics.route) {
-            val viewModel: StatisticsViewModel = getViewModel()  // import: org.koin.androidx.compose.getViewModel
+            val viewModel: StatisticsViewModel = getViewModel()
             StatisticsScreen(viewModel = viewModel)
         }
 

@@ -4,48 +4,38 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sudoku.ui.navigation.NavigationItem
-import com.example.sudoku.ui.navigation.Screens
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.Text
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.example.sudoku.ui.navigation.NavigationBarBody
 import com.example.sudoku.ui.navigation.NavigationBarHeader
+import com.example.sudoku.ui.navigation.Screens
 import com.example.sudoku.ui.navigation.SetUpNavigationGraph
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    darkThemeEnabled: Boolean,
+    onToggleDarkTheme: (Boolean) -> Unit
+) {
     val items = remember {
         listOf(
             NavigationItem(
@@ -132,7 +122,12 @@ fun MainScreen() {
                 )
             }
         ) { innerPadding ->
-            SetUpNavigationGraph(navController = navController, innerPadding = innerPadding)
+            SetUpNavigationGraph(
+                navController = navController,
+                innerPadding = innerPadding,
+                darkThemeEnabled = darkThemeEnabled,
+                onToggleDarkTheme = onToggleDarkTheme
+            )
         }
     }
 }
