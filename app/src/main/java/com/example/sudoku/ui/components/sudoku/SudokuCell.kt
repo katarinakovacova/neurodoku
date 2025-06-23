@@ -2,8 +2,7 @@ package com.example.sudoku.ui.components.sudoku
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SudokuCell(
     number: Int?,
+    notes: Set<Int>,
     isSelected: Boolean,
     isOriginal: Boolean,
     hasRightBorder: Boolean,
@@ -63,11 +63,15 @@ fun SudokuCell(
                 }
             }
     ) {
-        Text(
-            text = number?.toString() ?: "",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = textColor
-        )
+        if (number != null) {
+            Text(
+                text = number.toString(),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = textColor
+            )
+        } else if (notes.isNotEmpty()) {
+            NotesDisplay(notes)
+        }
     }
 }

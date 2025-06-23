@@ -5,6 +5,7 @@ data class SudokuGame(
     val completeGrid: Array<IntArray>,
     val visibleMask: Array<Array<Boolean>>,
     val userGrid: Array<Array<Int?>>,
+    val notes: Array<Array<Set<Int>>> = Array(9) { Array(9) { emptySet<Int>() } },
     val difficulty: SudokuDifficulty,
     val timeSpent: Long,
     val isCompleted: Boolean = false,
@@ -21,6 +22,7 @@ data class SudokuGame(
         if (!completeGrid.contentDeepEquals(other.completeGrid)) return false
         if (!visibleMask.contentDeepEquals(other.visibleMask)) return false
         if (!userGrid.contentDeepEquals(other.userGrid)) return false
+        if (!notes.contentDeepEquals(other.notes)) return false
         if (difficulty != other.difficulty) return false
         if (timeSpent != other.timeSpent) return false
         if (isCompleted != other.isCompleted) return false
@@ -35,6 +37,7 @@ data class SudokuGame(
         result = 31 * result + completeGrid.contentDeepHashCode()
         result = 31 * result + visibleMask.contentDeepHashCode()
         result = 31 * result + userGrid.contentDeepHashCode()
+        result = 31 * result + notes.contentDeepHashCode()
         result = 31 * result + difficulty.hashCode()
         result = 31 * result + timeSpent.hashCode()
         result = 31 * result + isCompleted.hashCode()
