@@ -18,7 +18,9 @@ val databaseModule = module {
             androidContext(),
             SudokuDatabase::class.java,
             "sudoku_db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     single<SudokuDao> {

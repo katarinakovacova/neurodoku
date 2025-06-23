@@ -35,12 +35,15 @@ fun SudokuScreen(
     val sudokuGame by viewModel.sudokuGame.collectAsState()
     val selectedCell by viewModel.selectedCell.collectAsState()
     val time by viewModel.time.collectAsState()
+    val isNotesMode by viewModel.isNotesMode.collectAsState()
 
     var isOverlayVisible by remember { mutableStateOf(false) }
     var showLevelDialog by remember { mutableStateOf(false) }
 
     val minutes = (time / 60).toString().padStart(2, '0')
     val seconds = (time % 60).toString().padStart(2, '0')
+
+    val notes by viewModel.notes.collectAsState()
 
     val startTimer = {
         viewModel.startTimer()
@@ -51,7 +54,6 @@ fun SudokuScreen(
         isOverlayVisible = true
     }
 
-    // Lifecycle observer na zastavenie/spustenie timeru pri prepnutí karty
     val lifecycleOwner = LocalLifecycleOwner.current
     androidx.compose.runtime.DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -104,19 +106,20 @@ fun SudokuScreen(
             })
         }
 
-        if (sudokuGame != null) {
+        sudokuGame?.let { game ->
             SudokuGrid(
-                sudoku = sudokuGame!!.userGrid,
-                originalCells = sudokuGame!!.visibleMask,
+                sudoku = game.userGrid,
+                originalCells = game.visibleMask,
                 selectedCell = selectedCell,
+                notes = notes,
                 onCellClick = { row, col ->
-                    if (!sudokuGame!!.visibleMask[row][col]) {
+                    if (!game.visibleMask[row][col]) {
                         viewModel.selectCell(row, col)
                     }
                 }
             )
-        } else {
-            Spacer(modifier = Modifier.height(200.dp))
+        } ?: run {
+            androidx.compose.material3.Text(text = "Loading Sudoku…")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -132,19 +135,21 @@ fun SudokuScreen(
                     viewModel.getHint(row, col)
                 }
             },
-            onRestart = {
-                sudokuGame?.let {
-                    viewModel.generateNewGame(it.difficulty)
-                    startTimer()
-                }
-            }
+            onToggleNotesMode = {
+                viewModel.toggleNotesMode()
+            },
+            isNotesMode = isNotesMode
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         NumberSelector { number ->
             selectedCell?.let { (row, col) ->
-                viewModel.setNumber(row, col, number)
+                if (isNotesMode) {
+                    viewModel.toggleNote(row, col, number)
+                } else {
+                    viewModel.setNumber(row, col, number)
+                }
             }
         }
     }

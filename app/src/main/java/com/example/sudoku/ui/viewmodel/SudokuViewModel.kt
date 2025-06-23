@@ -31,6 +31,14 @@ class SudokuViewModel(
     private var timerJob: Job? = null
     private var autosaveJob: Job? = null
 
+    private val _notes = MutableStateFlow(
+        Array(9) { Array(9) { emptySet<Int>() } }
+    )
+    val notes: StateFlow<Array<Array<Set<Int>>>> = _notes.asStateFlow()
+
+    private val _isNotesMode = MutableStateFlow(false)
+    val isNotesMode: StateFlow<Boolean> = _isNotesMode.asStateFlow()
+
     init {
         viewModelScope.launch {
             val loadedGame = loadSudokuGameUseCase()
@@ -69,6 +77,10 @@ class SudokuViewModel(
         }.toTypedArray()
 
         updateGame { it.copy(userGrid = newUserGrid) }
+
+        if (number != null) {
+            clearNotes(row, col)
+        }
     }
 
     fun getHint(row: Int, col: Int) {
@@ -140,6 +152,39 @@ class SudokuViewModel(
         }
         return true
     }
+
+    fun toggleNote(row: Int, col: Int, number: Int) {
+        val currentNotes = _notes.value
+        val newNotes = currentNotes.map { it.copyOf() }.toTypedArray()
+        val cellNotes = newNotes[row][col].toMutableSet()
+
+        if (number in cellNotes) {
+            cellNotes.remove(number)
+        } else {
+            cellNotes.add(number)
+        }
+        newNotes[row][col] = cellNotes.toSet()
+
+        _notes.value = newNotes
+
+        println("Notes updated at ($row, $col): ${_notes.value[row][col]}")  // pridaj toto
+    }
+
+
+    fun toggleNotesMode() {
+        _isNotesMode.value = !_isNotesMode.value
+    }
+
+    fun clearNotes(row: Int, col: Int) {
+        val currentNotes = _notes.value
+        val newNotes = Array(9) { r ->
+            Array(9) { c ->
+                if (r == row && c == col) emptySet() else currentNotes[r][c]
+            }
+        }
+        _notes.value = newNotes
+    }
+
 
     @OptIn(FlowPreview::class)
     private fun observeAndAutosave() {
