@@ -1,6 +1,5 @@
 package com.example.sudoku.ui.navigation
 
-import BlogDetailScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.sudoku.ui.screens.BlogDetailScreen
 import com.example.sudoku.ui.screens.SettingsScreen
 import com.example.sudoku.ui.screens.StatisticsScreen
 import com.example.sudoku.ui.screens.SudokuScreen

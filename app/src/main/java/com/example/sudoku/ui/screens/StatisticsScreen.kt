@@ -43,4 +43,3 @@ fun StatisticsScreen(viewModel: StatisticsViewModel, modifier: Modifier = Modifi
         }
     }
 }
-

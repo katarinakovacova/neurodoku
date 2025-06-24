@@ -13,6 +13,7 @@ Sudoku v1.0.0 is a simple and interactive sudoku puzzle application with essenti
   - Erase entered numbers.  
   - Restart the puzzle to its initial state.  
   - Generate a new puzzle.  
+- **Notes mode** 
 - **Consistent UI Design** – Uses a uniform and aesthetically pleasing color scheme.  
 - **Testing** – Includes unit tests for sudoku logic, timer, and UI components.  
 - **Database Integration** – Stores user data, such as game history and preferences, using SQLite or Room.  

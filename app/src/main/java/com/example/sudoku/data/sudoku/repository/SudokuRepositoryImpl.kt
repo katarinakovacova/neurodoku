@@ -16,7 +16,6 @@ class SudokuRepositoryImpl(
 
     override suspend fun insertSudoku(sudoku: SudokuGame) {
         val entity = sudokuMapper.domainToEntity(sudoku)
-        println("Inserting SudokuEntity with id=${entity.id}, createdAt=${entity.createdAt}")
         sudokuDao.insertSudoku(entity)
     }
 

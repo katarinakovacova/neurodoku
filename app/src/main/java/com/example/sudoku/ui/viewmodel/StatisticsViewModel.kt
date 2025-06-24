@@ -18,21 +18,10 @@ class StatisticsViewModel(
 
     init {
         viewModelScope.launch {
-            // Natvrdo testovacie dáta
-            val testData = mapOf(
-                SudokuDifficulty.EASY to listOf(createTestGame(SudokuDifficulty.EASY)),
-                SudokuDifficulty.MEDIUM to listOf(
-                    createTestGame(SudokuDifficulty.MEDIUM),
-                    createTestGame(SudokuDifficulty.MEDIUM)
-                ),
-                SudokuDifficulty.HARD to emptyList(),
-            )
-            _statsData.value = testData
 
-            // Ak chceš použiť reálne dáta, odkomentuj toto:
-            // val allGames = getCompletedSudokuGamesUseCase()
-            // val grouped = allGames.groupBy { it.difficulty }
-            // _statsData.value = grouped
+             val allGames = getCompletedSudokuGamesUseCase()
+             val grouped = allGames.groupBy { it.difficulty }
+             _statsData.value = grouped
         }
     }
 
