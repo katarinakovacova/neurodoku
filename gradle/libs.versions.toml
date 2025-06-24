@@ -1,25 +1,21 @@
 [versions]
-accompanistCalendar = "0.23.1"
 agp = "8.8.2"
 gson = "2.10.1"
-koinAndroid = "3.1.2"
-koinAndroidCompose = "3.1.2"
 kotlin = "2.0.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
-lifecycleRuntimeCompose = "2.8.7"
+lifecycleRuntimeKtx = "2.9.1"
+lifecycleRuntimeCompose = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
-material3 = "1.2.0"
-materialCharts = "1.2.0"
-navigationRuntime = "2.9.0-rc01"
-navigationCompose = "2.8.9"
+composeBom = "2025.06.01"
+material3 = "1.3.2"
+navigationRuntime = "2.9.0"
+navigationCompose = "2.9.0"
 generativeai = "0.9.0"
-appcompat = "1.7.0"
-room = "2.7.1"
+appcompat = "1.7.1"
+room = "2.7.2"
 koin = "3.5.3"
 ksp = "2.0.0-1.0.21"
 composeMaterialCore = "1.4.1"
@@ -57,13 +53,10 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 
 generativeai = { group = "com.google.ai.client.generativeai", name = "generativeai", version.ref = "generativeai" }
 
-koin-android-compose = { module = "io.insert-koin:koin-android-compose", version.ref = "koinAndroidCompose" }
-koin-android-v312 = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 androidx-compose-material-core = { group = "androidx.wear.compose", name = "compose-material-core", version.ref = "composeMaterialCore" }
-material-charts = { module = "org.jetbrains.compose.material:material-charts", version.ref = "materialCharts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

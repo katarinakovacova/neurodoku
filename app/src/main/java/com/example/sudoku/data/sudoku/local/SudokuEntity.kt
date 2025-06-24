@@ -9,6 +9,7 @@ data class SudokuEntity(
     val initialGrid: String,
     val maskedGrid: String,
     val userGrid: String,
+    val notesJson: String? = null,
     val difficulty: String,
     val timeSpent: Long,
     val isCompleted: Boolean,

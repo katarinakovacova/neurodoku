@@ -18,11 +18,16 @@ class SudokuMapper(private val gson: Gson = Gson()) {
 
         val difficulty = SudokuDifficulty.valueOf(entity.difficulty)
 
+        val notesType = object : TypeToken<Array<Array<Set<Int>>>>() {}.type
+        val notes = entity.notesJson?.let { gson.fromJson(it, notesType) }
+            ?: Array(9) { Array(9) { emptySet<Int>() } }
+
         return SudokuGame(
             id = entity.id,
             completeGrid = completeGrid,
             visibleMask = visibleMask,
             userGrid = userGrid,
+            notes = notes,
             difficulty = difficulty,
             timeSpent = entity.timeSpent,
             isCompleted = entity.isCompleted,
@@ -35,12 +40,14 @@ class SudokuMapper(private val gson: Gson = Gson()) {
         val initialGridJson = gson.toJson(domain.completeGrid)
         val maskedGridJson = gson.toJson(domain.visibleMask)
         val userGridJson = gson.toJson(domain.userGrid)
+        val notesJson = gson.toJson(domain.notes)
 
         return SudokuEntity(
             id = domain.id,
             initialGrid = initialGridJson,
             maskedGrid = maskedGridJson,
             userGrid = userGridJson,
+            notesJson = notesJson,
             difficulty = domain.difficulty.name,
             timeSpent = domain.timeSpent,
             isCompleted = domain.isCompleted,

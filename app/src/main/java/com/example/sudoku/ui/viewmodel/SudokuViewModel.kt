@@ -45,6 +45,7 @@ class SudokuViewModel(
             if (loadedGame != null) {
                 _sudokuGame.value = loadedGame
                 _time.value = loadedGame.timeSpent
+                _notes.value = loadedGame.notes
                 startTimer()
             } else {
                 generateNewGame(SudokuDifficulty.MEDIUM)
@@ -125,7 +126,6 @@ class SudokuViewModel(
         val game = _sudokuGame.value ?: return
         val updated = modifier(game)
 
-        println("updateGame - Updated userGrid snapshot:")
         updated.userGrid.forEach { row ->
             println(row.joinToString(", ") { it?.toString() ?: "." })
         }
@@ -135,7 +135,6 @@ class SudokuViewModel(
         } else {
             updated
         }
-
         _sudokuGame.value = finalGame
     }
 
@@ -166,8 +165,6 @@ class SudokuViewModel(
         newNotes[row][col] = cellNotes.toSet()
 
         _notes.value = newNotes
-
-        println("Notes updated at ($row, $col): ${_notes.value[row][col]}")  // pridaj toto
     }
 
 
@@ -175,7 +172,7 @@ class SudokuViewModel(
         _isNotesMode.value = !_isNotesMode.value
     }
 
-    fun clearNotes(row: Int, col: Int) {
+    private fun clearNotes(row: Int, col: Int) {
         val currentNotes = _notes.value
         val newNotes = Array(9) { r ->
             Array(9) { c ->
@@ -189,16 +186,12 @@ class SudokuViewModel(
     @OptIn(FlowPreview::class)
     private fun observeAndAutosave() {
         autosaveJob = viewModelScope.launch {
-            combine(_sudokuGame, _time) { game, time ->
-                game?.copy(timeSpent = time)
-            }.debounce(1000)
+            combine(_sudokuGame, _time, _notes) { game, time, notes ->
+                game?.copy(timeSpent = time, notes = notes)
+            }
+                .debounce(1000)
                 .filterNotNull()
                 .collect { game ->
-                    println("Autosaving SudokuGame with id=${game.id}, timeSpent=${game.timeSpent}")
-                    println("Autosaving userGrid snapshot:")
-                    game.userGrid.forEach { row ->
-                        println(row.joinToString(", ") { it?.toString() ?: "." })
-                    }
                     saveSudokuGameUseCase(game)
                 }
         }

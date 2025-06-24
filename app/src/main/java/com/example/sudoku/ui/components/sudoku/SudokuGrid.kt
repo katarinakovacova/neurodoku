@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SudokuGrid(
     sudoku: Array<Array<Int?>>,
-    notes: Array<Array<Set<Int>>>,              // pridane
+    notes: Array<Array<Set<Int>>>,
     originalCells: Array<Array<Boolean>>,
     selectedCell: Pair<Int, Int>?,
     onCellClick: (row: Int, col: Int) -> Unit
@@ -29,7 +29,7 @@ fun SudokuGrid(
                 for (colIndex in sudoku[rowIndex].indices) {
                     SudokuCell(
                         number = sudoku[rowIndex][colIndex],
-                        notes = notes[rowIndex][colIndex],     // pridane
+                        notes = notes[rowIndex][colIndex],
                         isSelected = selectedCell == Pair(rowIndex, colIndex),
                         isOriginal = originalCells[rowIndex][colIndex],
                         hasRightBorder = (colIndex + 1) % 3 == 0 && colIndex != sudoku[rowIndex].lastIndex,

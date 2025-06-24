@@ -8,7 +8,6 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    // UseCases
     factory { GenerateSudokuUseCase() }
     factory { MaskSudokuUseCase() }
     factory { GenerateNewSudokuGameUseCase(get(), get()) }
@@ -16,7 +15,6 @@ val viewModelModule = module {
     factory { SaveSudokuGameUseCase(get()) }
     factory { GetCompletedSudokuGamesUseCase(get()) }
 
-    // ViewModel
     viewModel {
         SudokuViewModel(
             generateNewSudokuGameUseCase = get(),
