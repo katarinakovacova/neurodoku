@@ -83,4 +83,8 @@ dependencies {
 
     implementation(libs.androidx.material3)
     implementation(libs.gson)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotlin)
 }

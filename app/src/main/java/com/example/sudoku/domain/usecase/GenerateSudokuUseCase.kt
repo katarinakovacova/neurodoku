@@ -27,7 +27,12 @@ class GenerateSudokuUseCase {
         return true
     }
 
-    private fun isSudokuGridValid(sudokuGrid: Array<IntArray>, row: Int, column: Int, number: Int): Boolean {
+    private fun isSudokuGridValid(
+        sudokuGrid: Array<IntArray>,
+        row: Int, column:
+        Int,
+        number: Int
+    ): Boolean {
         return !isNumberInRow(sudokuGrid, row, number) &&
                 !isNumberInColumn(sudokuGrid, column, number) &&
                 !isNumberInBox(sudokuGrid, row, column, number)
@@ -41,7 +46,12 @@ class GenerateSudokuUseCase {
         return sudokuGrid.any { it [column] == number }
     }
 
-    private fun isNumberInBox(sudokuGrid: Array<IntArray>, row: Int, column: Int, number: Int): Boolean {
+    private fun isNumberInBox(
+        sudokuGrid: Array<IntArray>,
+        row: Int,
+        column: Int,
+        number: Int
+    ): Boolean {
         val startRow = row - row % 3
         val startColumn = column - column % 3
 
