@@ -6,9 +6,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -22,7 +23,8 @@ fun SettingsScreen(
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .testTag("settings_screen"), // test tag pre celý screen
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -30,7 +32,9 @@ fun SettingsScreen(
             text = "Settings",
             fontSize = 40.sp,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 40.dp)
+            modifier = Modifier
+                .padding(bottom = 40.dp)
+                .testTag("settings_title") // test tag pre nadpis
         )
 
         Row(
@@ -40,12 +44,15 @@ fun SettingsScreen(
                 text = "Dark Mode",
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .testTag("dark_mode_label") // test tag pre popis prepínača
             )
 
             Switch(
                 checked = isDarkTheme,
                 onCheckedChange = onToggleDarkTheme,
+                modifier = Modifier.testTag("dark_mode_switch"), // test tag pre switch
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary
                 )

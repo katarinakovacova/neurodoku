@@ -11,16 +11,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NumberSelector(onNumberSelected: (Int) -> Unit) {
+fun NumberSelector(
+    onNumberSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp)
+            .testTag("numberSelector"),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -35,8 +42,10 @@ fun NumberSelector(onNumberSelected: (Int) -> Unit) {
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        onNumberSelected(num)
+                    ) { onNumberSelected(num) }
+                    .testTag("num$num")
+                    .semantics {
+                        contentDescription = "Number $num"
                     },
                 contentAlignment = Alignment.Center
             ) {

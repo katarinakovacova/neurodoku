@@ -25,7 +25,7 @@ class GenerateNewSudokuGameUseCaseTest {
     }
 
     @Test
-    fun `invoke returns SudokuGame with correct fields`() {
+    fun invokeGenerateNewGameUseCase() {
         val difficulty = SudokuDifficulty.EASY
 
         val completeGrid = Array(9) { row -> IntArray(9) { col -> row * 9 + col + 1 } }

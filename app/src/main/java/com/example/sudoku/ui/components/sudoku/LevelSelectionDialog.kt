@@ -9,12 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.sudoku.domain.model.SudokuDifficulty
 
+import androidx.compose.ui.platform.testTag
+
 @Composable
 fun LevelSelectionDialog(
     onDismissRequest: () -> Unit,
-    onLevelSelected: (SudokuDifficulty) -> Unit
+    onLevelSelected: (SudokuDifficulty) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AlertDialog(
+        modifier = modifier.testTag("LevelSelectionDialog"),
         onDismissRequest = onDismissRequest,
         title = {
             Text(
@@ -32,7 +36,8 @@ fun LevelSelectionDialog(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                            .padding(vertical = 4.dp)
+                            .testTag("LevelButton_${level.name}"),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
                             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -51,6 +56,7 @@ fun LevelSelectionDialog(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
+
             ) {
                 Text("Cancel")
             }

@@ -39,7 +39,7 @@ fun LowerActionBar(
         Spacer(modifier = Modifier.width(12.dp))
         ActionButton(
             text = if (isNotesMode) "Notes: On" else "Notes: Off",
-            icon = if (isNotesMode) Icons.Default.Create else Icons.Default.Create,
+            icon = Icons.Default.Create,
             onClick = onToggleNotesMode
         )
     }
