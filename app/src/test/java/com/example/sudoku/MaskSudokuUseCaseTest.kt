@@ -41,7 +41,7 @@ class MaskSudokuUseCaseTest {
     }
 
     @Test
-    fun differentMasksForSameDifficulty() {
+    fun masksAreDifferentForSameDifficulty() {
         val mask1 = maskUseCase.generateVisibleMask(SudokuDifficulty.HARD)
         val mask2 = maskUseCase.generateVisibleMask(SudokuDifficulty.HARD)
 

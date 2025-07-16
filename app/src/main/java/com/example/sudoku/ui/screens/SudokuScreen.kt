@@ -143,7 +143,7 @@ fun SudokuScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        NumberSelector { number ->
+        NumberSelector(onNumberSelected = { number ->
             selectedCell?.let { (row, col) ->
                 if (isNotesMode) {
                     viewModel.toggleNote(row, col, number)
@@ -151,6 +151,6 @@ fun SudokuScreen(
                     viewModel.setNumber(row, col, number)
                 }
             }
-        }
+        })
     }
 }

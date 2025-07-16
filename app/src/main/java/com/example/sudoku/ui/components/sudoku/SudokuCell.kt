@@ -22,7 +22,8 @@ fun SudokuCell(
     isOriginal: Boolean,
     hasRightBorder: Boolean,
     hasBottomBorder: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val backgroundColor = when {
         isSelected -> MaterialTheme.colorScheme.secondaryContainer
@@ -40,7 +41,7 @@ fun SudokuCell(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .size(42.dp)
             .background(backgroundColor)
             .clickable(enabled = !isOriginal, onClick = onClick)
@@ -63,15 +64,18 @@ fun SudokuCell(
                 }
             }
     ) {
-        if (number != null) {
-            Text(
-                text = number.toString(),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = textColor
-            )
-        } else if (notes.isNotEmpty()) {
-            NotesDisplay(notes)
+        when {
+            number != null -> {
+                Text(
+                    text = number.toString(),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = textColor
+                )
+            }
+            notes.isNotEmpty() -> {
+                NotesDisplay(notes)
+            }
         }
     }
 }
