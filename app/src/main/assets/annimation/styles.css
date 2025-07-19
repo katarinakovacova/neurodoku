@@ -1,0 +1,74 @@
+body {
+    font-family: sans-serif;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+#controls {
+    margin-bottom: 10px;
+}
+
+#attempts {
+    margin: 10px;
+    font-size: 18px;
+}
+
+button {
+    padding: 8px 16px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #ccc;
+    color: black;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #f0f0f0;
+}
+
+.number-container {
+    display: grid;
+    grid-template-columns: repeat(9, 60px);
+    margin: 20px auto;
+    border: 3px solid #0B2839;
+}
+
+.number-cell {
+    background-color: white;
+    border: 1px solid #0B2839;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    text-align: center;
+    line-height: 60px;
+    color: #0B2839;
+    box-sizing: border-box;
+}
+
+/* Thick borders for 3x3 boxes */
+.number-cell:nth-child(3n) {
+    border-right: 3px solid #0B2839;
+}
+
+.number-cell:nth-child(n+19):nth-child(-n+27),
+.number-cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 3px solid #0B2839;
+}
+
+.trying {
+    background-color: #cce5ff;
+    color: #007bff;
+}
+.confirmed {
+    font-weight: bold;
+    color: black;
+}
+.backtrack {
+    background-color: #f8d7da;
+    color: #dc3545;
+}
