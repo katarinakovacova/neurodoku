@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sudoku</string>
+
+    <string name="default_web_client_id">
+    659413249468-3gtemptjgk8g29q5jl4ivn6n3g28g10i.apps.googleusercontent.com</string>
+
 </resources>
