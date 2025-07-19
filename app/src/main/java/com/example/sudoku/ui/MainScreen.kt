@@ -63,10 +63,28 @@ fun MainScreen(
                 unselectedIcon = Icons.Outlined.Star,
             ),
             NavigationItem(
+                title = "Login & Registration",
+                route = Screens.Auth.route,
+                selectedIcon = Icons.Filled.Lock,
+                unselectedIcon = Icons.Outlined.Lock,
+            ),
+            NavigationItem(
+                title = "Profile",
+                route = Screens.Profile.route,
+                selectedIcon = Icons.Filled.Person,
+                unselectedIcon = Icons.Outlined.Person,
+            ),
+            NavigationItem(
                 title = "Settings",
                 route = Screens.Settings.route,
                 selectedIcon = Icons.Filled.Settings,
                 unselectedIcon = Icons.Outlined.Settings,
+            ),
+            NavigationItem(
+                title = "Support",
+                route = Screens.Support.route,
+                selectedIcon = Icons.Filled.Search,
+                unselectedIcon = Icons.Outlined.Search,
             ),
         )
     }

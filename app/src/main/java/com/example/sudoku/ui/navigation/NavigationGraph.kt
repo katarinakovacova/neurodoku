@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.sudoku.ui.screens.AuthScreen
 import com.example.sudoku.ui.screens.BlogDetailScreen
 import com.example.sudoku.ui.screens.SettingsScreen
 import com.example.sudoku.ui.screens.StatisticsScreen
@@ -16,6 +17,8 @@ import com.example.sudoku.ui.screens.SudokuScreen
 import com.example.sudoku.ui.viewmodel.StatisticsViewModel
 import com.example.sudoku.ui.viewmodel.SudokuViewModel
 import com.example.sudoku.ui.screens.BlogScreen
+import com.example.sudoku.ui.screens.ProfileScreen
+import com.example.sudoku.ui.screens.SupportScreen
 import org.koin.androidx.compose.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -69,5 +72,26 @@ fun SetUpNavigationGraph(
                 modifier = Modifier.padding(innerPadding)
             )
         }
+
+        composable(Screens.Auth.route) {
+            AuthScreen(
+                navController = navController,
+                onAuthSuccess = {
+                    navController.navigate(Screens.Sudoku.route) {
+                        popUpTo(Screens.Auth.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable("profile") {
+            ProfileScreen()
+        }
+
+        composable("support") {
+            SupportScreen()
+        }
+
+
     }
 }
