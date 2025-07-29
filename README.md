@@ -284,3 +284,12 @@ ui/
 - **Room** for local persistence
 - **Firebase Auth & Firestore** for optional cloud features
 
+### Backtracking Algorithm for Sudoku Generation
+
+The Sudoku grid generation uses a backtracking algorithm to fill the 9x9 board with valid numbers. The algorithm tries numbers 1 through 9 in each empty cell, verifying Sudoku rules (no duplicates in row, column, and 3x3 box). If no valid number fits, it backtracks to previous cells and tries other options until the grid is complete.
+
+For a visual explanation, check out this animation demonstrating the backtracking process in action:
+
+[![Backtracking Algorithm Demo](https://img.youtube.com/vi/DXbXIcHCQZY/hqdefault.jpg)](https://youtu.be/DXbXIcHCQZY)
+
+*Click the image to watch the video.*
