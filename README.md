@@ -23,9 +23,9 @@ Whether you're a casual player or a programming enthusiast, there's something he
   - **Notes Mode** – Toggle a pencil mode to write multiple possible numbers into a cell
   
   <p align="center">
-  <img src="app/src/main/assets/screens/sudoku_screen.png" alt="Sudoku" width="40%" />
-  <img src="app/src/main/assets/screens/sudoku_screen_dark.png" alt="Sudoku Dark" width="40%" />
-  <img src="app/src/main/assets/screens/difficulty_level.png" alt="Difficulty Level" width="40%" />
+  <img src="app/src/main/assets/screens/sudoku_screen.png" alt="Sudoku" width="30%" />
+  <img src="app/src/main/assets/screens/sudoku_screen_dark.png" alt="Sudoku Dark" width="30%" />
+  <img src="app/src/main/assets/screens/difficulty_level.png" alt="Difficulty Level" width="30%" />
 </p>
 
 ### Brain Health Awareness
