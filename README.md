@@ -21,15 +21,19 @@ Whether you're a casual player or a programming enthusiast, there's something he
   - Restart the puzzle to its original state
   - Generate a completely new puzzle
   - **Notes Mode** – Toggle a pencil mode to write multiple possible numbers into a cell
-    ![Sudoku_Screen](app/src/main/assets/screens/sudoku_screen.png)
-    ![Sudoku_Screen](app/src/main/assets/screens/sudoku_screen_dark.png)
-    ![Sudoku_Screen](app/src/main/assets/screens/difficulty_level.png)
+  
+  <p align="center">
+  <img src="app/src/main/assets/screens/sudoku_screen.png" alt="Sudoku" width="30%" />
+  <img src="app/src/main/assets/screens/sudoku_screen_dark.png" alt="Sudoku Dark" width="30%" />
+  <img src="app/src/main/assets/screens/difficulty_level.png" alt="Difficulty Level" width="30%" />
+</p>
 
 ### Brain Health Awareness
 - **Dementia Prevention Tips** – During paused state, the app shows helpful tips related to cognitive health and lifestyle.
-  ![Dementia_Prevention](app/src/main/assets/screens/paused_screen.png)
-  ![Dementia_Prevention](app/src/main/assets/screens/dementia_prevention_dark.png)
-
+ <p align="center">
+  <img src="app/src/main/assets/screens/paused_screen.png" alt="Paused Screen" width="30%" />
+  <img src="app/src/main/assets/screens/dementia_prevention_dark.png" alt="Dementia Prevention Dark" width="30%" />
+</p>
 
 ### Blog & Educational Content
 - **In-App Blog Section** – Read short articles about dementia prevention, cognitive health, and Sudoku-solving strategies.
@@ -37,27 +41,41 @@ Whether you're a casual player or a programming enthusiast, there's something he
   - Mental wellness tips for seniors
   - How Sudoku helps maintain cognitive function
     - Strategies and logic techniques for solving puzzles efficiently
-      ![Blog Screen](app/src/main/assets/screens/blog_screen.png)
-      ![Blog Screen](app/src/main/assets/screens/blog_screen_dark.png)
-      ![Blog Screen](app/src/main/assets/screens/blog_detail_screen.png)
+<p align="center">
+  <img src="app/src/main/assets/screens/blog_screen.png" alt="Blog Screen" width="30%" />
+  <img src="app/src/main/assets/screens/blog_screen_dark.png" alt="Blog Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/blog_detail_screen.png" alt="Blog Detail Screen" width="30%" />
+</p>
 
 ### User Accounts & Profiles
 - **Sign up / Log in** – Create an account using email and password, or log in via your Google account.
 - **Custom Profiles** – Set your display name and write a short bio after logging in.
 - **User Statistics** – Track how many puzzles you've solved per difficulty level.
 - **Progress Saving** – Store your puzzle history and preferences locally using Room and in the cloud with Firebase.
-  ![Statistics_Screen](app/src/main/assets/screens/statistics_screen.png)
-  ![Statistics_Screen](app/src/main/assets/screens/statistics_screen_dark.png)
-  ![User_Screen](app/src/main/assets/screens/login_and_registration_screen.png)
+<p align="center">
+  <img src="app/src/main/assets/screens/login_and_registration_screen.png" alt="Login Screen" width="30%" />
+  <img src="app/src/main/assets/screens/login_screen_dark.png" alt="Login Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/profile_screen.png" alt="Profile Screen" width="30%" />
+  <img src="app/src/main/assets/screens/profile_screen_dark.png" alt="Profile Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/statistics_screen.png" alt="Statistics Screen" width="30%" />
+  <img src="app/src/main/assets/screens/statistics_screen_dark.png" alt="Statistics Screen Dark" width="30%" />
+</p>
 
 ### UI/UX Features
 - **Jetpack Compose UI** – Built with modern Android UI framework for a smooth and responsive experience.
 - **Dark Mode Support** – Toggle between light and dark themes in the Settings screen.
 - **Clean and Consistent Design** – A uniform, material-themed interface focused on readability and ease of use.
+<p align="center">
+  <img src="app/src/main/assets/screens/settings_screen.png" alt="Settings Screen" width="30%" />
+  <img src="app/src/main/assets/screens/settings_screen_dark.png" alt="Settings Screen Dark" width="30%" />
+</p>
 
 ### Support
 - **In-App Support Screen** – Easily contact the developer in case of issues or feedback.
-  ![Support_Screen](app/src/main/assets/screens/support_screen_dark.png)
+<p align="center">
+  <img src="app/src/main/assets/screens/support_screen.png" alt="Support Screen" width="30%" />
+  <img src="app/src/main/assets/screens/support_screen_dark.png" alt="Support Screen Dark" width="30%" />
+</p>
 
 ### Testing
 - **Unit Tests** – Includes unit tests for puzzle generation/solving logic, timer, and UI components using JUnit and Mockito.
@@ -112,7 +130,7 @@ cd neurodoku
 ### 4. Run the App
 
 - Connect your Android device or start an emulator.
-- Click **Run ▶️** in Android Studio, or run from terminal:
+- Click **Run️** in Android Studio, or run from terminal:
 
 ```bash
 ./gradlew installDebug
@@ -217,7 +235,7 @@ Once the app is installed and launched, here's how users can interact with Neuro
 
 ### Settings
 
-- Enable **Dark Mode** manually, or follow system settings.
+- Enable **Dark Mode** manually.
 - Access the **Support** screen to contact the developer if needed.
 
 ## Architecture
@@ -266,3 +284,17 @@ ui/
 - **Room** for local persistence
 - **Firebase Auth & Firestore** for optional cloud features
 
+### Backtracking Algorithm for Sudoku Generation
+
+The Sudoku grid generation uses a backtracking algorithm to fill the 9x9 board with valid numbers. The algorithm tries numbers 1 through 9 in each empty cell, verifying Sudoku rules (no duplicates in row, column, and 3x3 box). If no valid number fits, it backtracks to previous cells and tries other options until the grid is complete.
+
+For a visual explanation, check out this animation demonstrating the backtracking process in action:
+
+[![Backtracking Algorithm Demo](https://img.youtube.com/vi/DXbXIcHCQZY/hqdefault.jpg)](https://youtu.be/DXbXIcHCQZY)
+
+*Click the image to watch the video.*
+
+## License
+
+This project is licensed under the MIT License.  
+See the [LICENSE](./LICENSE) file for details.
