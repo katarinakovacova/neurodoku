@@ -21,9 +21,12 @@ Whether you're a casual player or a programming enthusiast, there's something he
   - Restart the puzzle to its original state
   - Generate a completely new puzzle
   - **Notes Mode** – Toggle a pencil mode to write multiple possible numbers into a cell
-    ![Sudoku_Screen](app/src/main/assets/screens/sudoku_screen.png)
-    ![Sudoku_Screen](app/src/main/assets/screens/sudoku_screen_dark.png)
-    ![Sudoku_Screen](app/src/main/assets/screens/difficulty_level.png)
+  
+  <p align="center">
+  <img src="app/src/main/assets/screens/sudoku_screen.png" alt="Sudoku" width="40%" />
+  <img src="app/src/main/assets/screens/sudoku_screen_dark.png" alt="Sudoku Dark" width="40%" />
+  <img src="app/src/main/assets/screens/difficulty_level.png" alt="Difficulty Level" width="40%" />
+</p>
 
 ### Brain Health Awareness
 - **Dementia Prevention Tips** – During paused state, the app shows helpful tips related to cognitive health and lifestyle.
