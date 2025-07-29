@@ -30,9 +30,10 @@ Whether you're a casual player or a programming enthusiast, there's something he
 
 ### Brain Health Awareness
 - **Dementia Prevention Tips** – During paused state, the app shows helpful tips related to cognitive health and lifestyle.
-  ![Dementia_Prevention](app/src/main/assets/screens/paused_screen.png)
-  ![Dementia_Prevention](app/src/main/assets/screens/dementia_prevention_dark.png)
-
+ <p align="center">
+  <img src="app/src/main/assets/screens/paused_screen.png" alt="Paused Screen" width="30%" />
+  <img src="app/src/main/assets/screens/dementia_prevention_dark.png" alt="Dementia Prevention Dark" width="30%" />
+</p>
 
 ### Blog & Educational Content
 - **In-App Blog Section** – Read short articles about dementia prevention, cognitive health, and Sudoku-solving strategies.
@@ -40,18 +41,17 @@ Whether you're a casual player or a programming enthusiast, there's something he
   - Mental wellness tips for seniors
   - How Sudoku helps maintain cognitive function
     - Strategies and logic techniques for solving puzzles efficiently
-      ![Blog Screen](app/src/main/assets/screens/blog_screen.png)
-      ![Blog Screen](app/src/main/assets/screens/blog_screen_dark.png)
-      ![Blog Screen](app/src/main/assets/screens/blog_detail_screen.png)
+<p align="center">
+  <img src="app/src/main/assets/screens/blog_screen.png" alt="Blog Screen" width="30%" />
+  <img src="app/src/main/assets/screens/blog_screen_dark.png" alt="Blog Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/blog_detail_screen.png" alt="Blog Detail Screen" width="30%" />
+</p>
 
 ### User Accounts & Profiles
 - **Sign up / Log in** – Create an account using email and password, or log in via your Google account.
 - **Custom Profiles** – Set your display name and write a short bio after logging in.
 - **User Statistics** – Track how many puzzles you've solved per difficulty level.
 - **Progress Saving** – Store your puzzle history and preferences locally using Room and in the cloud with Firebase.
-  ![Statistics_Screen](app/src/main/assets/screens/statistics_screen.png)
-  ![Statistics_Screen](app/src/main/assets/screens/statistics_screen_dark.png)
-  ![User_Screen](app/src/main/assets/screens/login_and_registration_screen.png)
 
 ### UI/UX Features
 - **Jetpack Compose UI** – Built with modern Android UI framework for a smooth and responsive experience.
@@ -60,7 +60,9 @@ Whether you're a casual player or a programming enthusiast, there's something he
 
 ### Support
 - **In-App Support Screen** – Easily contact the developer in case of issues or feedback.
-  ![Support_Screen](app/src/main/assets/screens/support_screen_dark.png)
+<p align="center">
+  <img src="app/src/main/assets/screens/support_screen_dark.png" alt="Support Screen Dark" width="30%" />
+</p>
 
 ### Testing
 - **Unit Tests** – Includes unit tests for puzzle generation/solving logic, timer, and UI components using JUnit and Mockito.
