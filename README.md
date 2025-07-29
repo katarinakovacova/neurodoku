@@ -293,3 +293,8 @@ For a visual explanation, check out this animation demonstrating the backtrackin
 [![Backtracking Algorithm Demo](https://img.youtube.com/vi/DXbXIcHCQZY/hqdefault.jpg)](https://youtu.be/DXbXIcHCQZY)
 
 *Click the image to watch the video.*
+
+## License
+
+This project is licensed under the MIT License.  
+See the [LICENSE](./LICENSE) file for details.
