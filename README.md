@@ -52,15 +52,28 @@ Whether you're a casual player or a programming enthusiast, there's something he
 - **Custom Profiles** – Set your display name and write a short bio after logging in.
 - **User Statistics** – Track how many puzzles you've solved per difficulty level.
 - **Progress Saving** – Store your puzzle history and preferences locally using Room and in the cloud with Firebase.
+<p align="center">
+  <img src="app/src/main/assets/screens/login_and_registration_screen.png" alt="Login Screen" width="30%" />
+  <img src="app/src/main/assets/screens/login_screen_dark.png" alt="Login Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/profile_screen.png" alt="Profile Screen" width="30%" />
+  <img src="app/src/main/assets/screens/profile_screen_dark.png" alt="Profile Screen Dark" width="30%" />
+  <img src="app/src/main/assets/screens/statistics_screen.png" alt="Statistics Screen" width="30%" />
+  <img src="app/src/main/assets/screens/statistics_screen_dark.png" alt="Statistics Screen Dark" width="30%" />
+</p>
 
 ### UI/UX Features
 - **Jetpack Compose UI** – Built with modern Android UI framework for a smooth and responsive experience.
 - **Dark Mode Support** – Toggle between light and dark themes in the Settings screen.
 - **Clean and Consistent Design** – A uniform, material-themed interface focused on readability and ease of use.
+<p align="center">
+  <img src="app/src/main/assets/screens/settings_screen.png" alt="Settings Screen" width="30%" />
+  <img src="app/src/main/assets/screens/settings_screen_dark.png" alt="Settings Screen Dark" width="30%" />
+</p>
 
 ### Support
 - **In-App Support Screen** – Easily contact the developer in case of issues or feedback.
 <p align="center">
+  <img src="app/src/main/assets/screens/support_screen.png" alt="Support Screen" width="30%" />
   <img src="app/src/main/assets/screens/support_screen_dark.png" alt="Support Screen Dark" width="30%" />
 </p>
 
