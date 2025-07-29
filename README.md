@@ -130,7 +130,7 @@ cd neurodoku
 ### 4. Run the App
 
 - Connect your Android device or start an emulator.
-- Click **Run ▶️** in Android Studio, or run from terminal:
+- Click **Run️** in Android Studio, or run from terminal:
 
 ```bash
 ./gradlew installDebug
@@ -235,7 +235,7 @@ Once the app is installed and launched, here's how users can interact with Neuro
 
 ### Settings
 
-- Enable **Dark Mode** manually, or follow system settings.
+- Enable **Dark Mode** manually.
 - Access the **Support** screen to contact the developer if needed.
 
 ## Architecture
